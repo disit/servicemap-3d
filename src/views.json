@@ -1,0 +1,185 @@
+{
+    "Parcheggio auto": {
+        "capacity": {
+            "dataInto": "extrudedHeight",
+            "type": "rectangle",
+            "properties": {
+                "coordinates": "",
+                "material": "#4B0082",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+            },
+            "thickness": "0.00025",
+            "scala":"2"
+        },
+        "freeParkingLots": {
+            "dataInto": "extrudedHeight",
+            "type": "rectangle",
+            "properties": {
+                "coordinates": "",
+                "material": "img/materials/parcheggio.jpeg",
+                "alpha":"1",
+                "rotation": "45",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+            },
+            "thickness": "0.00025",
+            "scala":"2"
+        },
+        "occupiedParkingLots": {
+            "dataInto": "extrudedHeight",
+            "type": "rectangle",
+            "properties": {
+                "coordinates": "",
+                "material": "img/materials/parcheggio.jpeg",
+                "alpha":"1",
+                "rotation": "45",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+            },
+            "thickness": "0.00025",
+            "scala":"2"
+        },
+        "occupancy": {
+            "dataInto": "extrudedHeight",
+            "type": "rectangle",
+            "properties": {
+                "coordinates": "",
+                "material": "#123456",
+                "alpha":"1",
+                "rotation": "45",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+            },
+            "thickness": "0.00025",
+            "scala":"2"
+        }
+    },
+    "SensorSites": {
+        "avgTime": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"5"
+        },
+        "avgDistance": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"1"
+        },
+        "occupancy": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"100"
+        },
+        "concentration": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"10"
+        },
+        "vehicleFlow": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#0000FF",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"1"
+        },
+        "averageSpeed": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#00EE11",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"0.8"
+            },
+            "thickness": "1",
+            "scala":"10"
+        },
+        "thresholdPerc": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"100"
+        },
+        "speedPercentile": {
+            "dataInto": "extrudedHeight",
+            "type": "ellipse",
+            "properties": {
+                "semiMinorAxis": "25.0",
+                "semiMajorAxis": "25.0",
+                "extrudedHeight": "1",
+                "material": "#B8860B",
+                "outline":"false",
+                "outlineColor":"#000000",
+                "alpha":"1"
+            },
+            "thickness": "1",
+            "scala":"100"
+        }
+    }
+}
