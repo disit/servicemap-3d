@@ -182,12 +182,9 @@ html, #cesiumContainer{
     cursor: pointer;
 }
 #serviceSearch{
-    position:absolute;
-    z-index: 0;
     cursor: pointer;
-    bottom: 10px;
-    right: 10px;
     padding: 2px;
+	float: right
 }
 #chart_dialog{
     display:none;
@@ -1231,4 +1228,17 @@ body.firefox	#query_description_container #left_bracket p{
 
 .img_photo:hover {
     opacity:0.4;
+}
+
+#saveas {
+	min-height: 26px;
+}
+#saveas button {
+	float: left;
+}
+#saveResult {
+    margin-left: 5px;
+    color: red;
+    font-weight: bold;
+    float: left;
 }

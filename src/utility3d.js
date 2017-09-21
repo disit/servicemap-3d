@@ -33,9 +33,35 @@ var latitudeString = 0;
 var longitudeString = 0;
 var gpsActive = 0;
 var tipo_cat = "categorie";
+var tab = "tab"; // utilizzo per vedere quale tab ricaricare
 var countForLoading = 0;
 var apiBase = "http://servicemap.disit.org/WebAppGrafo/api/";
 var bingMapsKey = '... bing api key...';
+var barConf ="";
+var keywords = ""; 
+
+
+function getJsonFromUrl() {
+  var query = location.search.substr(1);
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
+
+
+function checkLoad(){
+    var r = getJsonFromUrl();
+    if(r.c ){
+        barConf = r.c;
+        setConfigurazione(barConf);
+        if(r.menu=="hide")
+            $("#menu-query .header").click();
+    }else mapLoad();
+    
+}
 
 function mapLoad() {
 	Cesium.BingMapsApi.defaultKey = bingMapsKey;
@@ -69,8 +95,17 @@ function mapLoad() {
             if (clicked.type === "Services") {
                 loadServiceDescription(clicked);
             }
+            if(clicked.type === "Pronto soccorso"){
+                loadFirstAidDescription(clicked);
+            }
+            if (clicked.type === "Stazione monitoraggio polline"){
+                loadPollenDescription(clicked);
+            }
             if (clicked.type === "SensorSites") {
                 loadSensorSiteDescription(clicked);
+            }
+            if(clicked.type === "Stazione di monitoraggio della qualità dell'aria"){
+                loadAirQualityDescription(clicked);
             }
             if (clicked.type === "Parcheggio auto") {
                 loadCarParkDescription(clicked);
@@ -128,15 +163,20 @@ function ricercaServizi() {
         dists = $('#raggioricerca').val();
         apiLink += "&maxDists=" + dists;
     }
+    
     keywords = $('#serviceTextFilter').val();
     apiLink += "&text=" + keywords;
     apiLink += "&lang=it" + "&format=json";
+	
+    controlloTutte(); // memorizza stato del menù e altro in check
+
     if (tipo_cat != "3d_data") {
         parseJSON(apiLink);
     } else {
         jsonURL = apiLink;
         manage3DDatas();
     }
+    
     gpsActive = 0;
 }
 
@@ -168,6 +208,7 @@ function getCategorie() {
             if ($(this).val() == "HappeningNow") {
                 categorie.pop("HappeningNow");
                 categorie.push("Event");
+                
             }
             nCatAll++;
         } else
@@ -177,6 +218,7 @@ function getCategorie() {
     });
     if (nCatAll == $('#' + tipo_cat + ' .macrocategory').length) {
         categorie = ["Service"];
+        
         categorie.push("BusStop");
         categorie.push("SensorSite");
         if (tipo_cat == 'categorie_t') {
@@ -195,19 +237,20 @@ function parseJSON(jsonURL) {
         viewer.entities.removeAll();
     sensorSitesInMap = false;
     $('#dati-roadsensors').hide();
-    
+    var nessunRisultato = true;
     $.ajax({
         url: jsonURL,
         async: true,
         datatype: "json",
         success: function(data) {
             $.each(data, function(key, val) {
-                if (key == "Services")
+                if (key == "Services"){
                     for (var feature of val.features) {
                         countForLoading++;
                         nessunRisultato = false;
                         addServiceToMap(feature, key);
                     }
+                }
                 if (key == "SensorSites") {
                     for (var feature of val.features) {
                         countForLoading++;
@@ -215,8 +258,25 @@ function parseJSON(jsonURL) {
                         addServiceToMap(feature, key);
                     }
                 }
+                
                 if (key == "BusStops") {
                     for (var feature of val.features) {
+                        countForLoading++;
+                        nessunRisultato = false;
+                        addServiceToMap(feature, key);
+                    }
+                    
+                }
+                if (key == "Air_quality_monitoring_station"){
+                     for (var feature of val.features) {
+                        countForLoading++;
+                        nessunRisultato = false;
+                        addServiceToMap(feature, key);
+                    }
+                    
+                }
+                if (key == "Pollen_monitoring_station"){
+                     for (var feature of val.features) {
                         countForLoading++;
                         nessunRisultato = false;
                         addServiceToMap(feature, key);
@@ -312,6 +372,158 @@ function loadBusStopDescription(busStop) {
             busStop.description = description;
         }
     });
+}
+
+function loadPollenDescription(pollenMonitoringStation){
+    $.ajax({
+        url: apiBase + 'v1/?serviceUri=' + pollenMonitoringStation.uri + '&format=json',
+        async: true,
+        datatype: "json",
+        success: function(data) {
+            var description = "<p>";
+            var familyName = "";
+            var concentration = "";
+            var value = 0;
+            var trend = "";
+            var measuredTime = "";
+            var trendMeasuredTime = ""; 
+            $.each(data, function(key, val) {
+                if (key == "Sensor") {
+                    description += "Nome: " + val.features[0].properties.name + "<br>";
+                    description += "Tipo: " + val.features[0].properties.typeLabel + "<br>";
+                    description += "Indirizzo" + val.features[0].properties.address + "n° " + val.features[0].properties.civic + "<br>";
+                    description += "Città: " + val.features[0].properties.city + " " + val.features[0].properties.cap + "<br>";
+                    description += "Provincia: " + val.features[0].properties.province + "<br><br><br>";
+                }
+                if (key == "realtime") {
+                    try {
+                        
+                        familyName = val.results.bindings[0].familyName.value; 
+                        concentration = val.results.bindings[0].concentration.value; 
+                        value =val.results.bindings[0].value.value;
+                        trend = val.results.bindings[0].trend.value;
+                        measuredTime = val.results.bindings[0].measuredTime.value;
+                        trendMeasuredTime = val.results.bindings[0].trendMeasuredTime.value;       
+                        
+                } catch (e) {}
+                    
+                    description += "family name: " + familyName + "<br>" +"concentration: "+
+                        concentration + "<br>"+ "value: " + value + "<br>" + "trend: " +
+                     trend + "<br>" + "measuredTime: " + measuredTime + "<br>" + 
+                        "treand Measured Time: " + trendMeasuredTime; 
+                }
+
+            });
+            description += "</p>";
+            pollenMonitoringStation.description = description;
+        }
+    });
+}
+
+function loadAirQualityDescription(airQualityMonitoringStation){
+    $.ajax({
+        url: apiBase + 'v1/?serviceUri=' + airQualityMonitoringStation.uri + '&format=json',
+        async: true,
+        datatype: "json",
+        success: function(data) {
+            var description = "<p>";
+            var NO2 = 0;
+            var SO2 = 0;
+            var H2S = 0;
+            var CO = 0;
+            var Benzene = 0;
+            var PM2_5 = 0;
+            var PM10 = 0;
+            var annualPM10ExceedCount = 0;
+            var measuredTime = "";
+            $.each(data, function(key, val) {
+                if (key == "Sensor") {
+                    description += "Nome: " + val.features[0].properties.name + "<br>";
+                    description += "Tipo: " + val.features[0].properties.typeLabel + "<br>";
+                    description += "Indirizzo" + val.features[0].properties.address + "n° " + val.features[0].properties.civic + "<br>";
+                    description += "Città: " + val.features[0].properties.city + " " + val.features[0].properties.cap + "<br>";
+                    description += "Provincia: " + val.features[0].properties.province + "<br><br><br>";
+                }
+                if (key == "realtime") {
+                    try {
+                        
+                        NO2 = val.results.bindings[0].NO2.value; 
+                        SO2 = val.results.bindings[0].SO2.value; 
+                        H2S =val.results.bindings[0].H2S.value;
+                        CO = val.results.bindings[0].CO.value;
+                        Benzene = val.results.bindings[0].Benzene.value;
+                        PM2_5 = val.results.bindings[0].PM2_5.value;       
+                        PM10 = val.results.bindings[0].PM10.value;
+                        annualPM10ExceedCount = val.results.bindings[0].annualPM10ExceedCount.value;
+                        measuredTime = val.results.bindings[0].measuredTime.value;
+                } catch (e) {}
+                    
+                    description += "NO2 : " + NO2 + "<br>" +"SO2: "+
+                        SO2 + "<br>"+ "H2S: " + H2S + "<br>" + "CO: " +
+                     CO + "<br>" + "Benzene: " + Benzene + "<br>" + 
+                        "PM2_5: " + PM2_5 + "<br>" + "PM10: " + PM10 + "<br>" +
+                        "AnnualPM10ExceedCount: "+ annualPM10ExceedCount + "<br>" +
+                        "measuredTime: " + measuredTime  ; 
+                }
+
+            });
+            description += "</p>";
+            airQualityMonitoringStation.description = description;
+        }
+    });
+}
+function loadFirstAidDescription(firstAid){
+    $.ajax({
+        url: apiBase + 'v1/?serviceUri=' + firstAid.uri + '&format=json',
+        async: true,
+        datatype: "json",
+        success: function(data) {
+            var description = "<p>";
+            var redCode = 0;
+            var blueCode =0;
+            var yellowCode = 0;
+            var greenCode = 0;
+            var whiteCode = 0;
+            var state= "";
+            var measuredTime = "";
+            $.each(data, function(key, val) {
+                if (key == "Sensor") {
+                    description += "Nome: " + val.features[0].properties.name + "<br>";
+                    description += "Tipo: " + val.features[0].properties.typeLabel + "<br>";
+                    description += "Indirizzo" + val.features[0].properties.address + "n° " + val.features[0].properties.civic + "<br>";
+                    description += "Città: " + val.features[0].properties.city + " " + val.features[0].properties.cap + "<br>";
+                    description += "Provincia: " + val.features[0].properties.province + "<br><br><br>";
+                }
+                if (key == "realtime") {
+                    try {
+                        for(var i = 0; i < val.results.bindings.length ; i++){
+                            state = val.results.bindings[i].state.value;
+                            if( state  === "Totali"){
+                        redCode = val.results.bindings[i].redCode.value; 
+                        blueCode = val.results.bindings[i].blueCode.value; 
+                        yellowCode =val.results.bindings[i].yellowCode.value;
+                        greenCode= val.results.bindings[i].greenCode.value; 
+                        whiteCode = val.results.bindings[i].whiteCode.value;
+                        measuredTime = val.results.bindings[i].measuredTime.value;
+                                break;
+                        }
+                    }
+                } catch (e) {}
+                    
+                    description += "Red Code: " + redCode + "<br>" +"Blue Code: "+
+                        blueCode + "<br>"+ "Yellow Code: " + yellowCode + "<br>" + "Green Code: " +
+                     greenCode + "<br>" + "White Code: " + whiteCode + "<br>" + 
+                        "Stato: " + state + "<br>" +
+                        "<br>measuredTime: " + measuredTime + "<br>";
+                }
+
+            });
+            description += "</p>";
+            firstAid.description = description;
+        }
+    });
+        
+    
 }
 
 function loadCarParkDescription(carPark) {
@@ -452,6 +664,7 @@ function getCategorie3D() {
     var nCatAll = 0;
     $('#' + tipo_cat + ' .macrocategory:checked').each(function() {
         categorie.push($(this).val());
+        nCatAll++;
     });
     return categorie;
 }
@@ -469,6 +682,15 @@ var jsonRESULT = null; //conterrà la risposta delle api alla ricerca
 var viewsJSON = null;
 var sensorSitesInMap = false;
 var carParkInMap = false;
+var firstAidInMap = false; 
+var airQualityMonitoringStationInMap = false;
+var pollenMonitoringStationInMap = false; 
+var airQualityMonitoringStationSelectedDatas = [];
+var airQualityMonitoringStationSelectedDataIndex = 0;
+var pollenMonitoringStationSelectedDatas = [];
+var pollenMonitoringStationSelectedDataIndex = 0;
+var firstAidSelectedDatas = [];
+var firstAidSelectedDataIndex = 0;
 var sensorSitesSelectedDatas = [];
 var sensorSitesSelectedDataIndex = 0;
 var carParkSelectedDatas = [];
@@ -483,6 +705,15 @@ function manage3DDatas() {
     carParkInMap = false;
     carParkSelectedDatas = getSelectedDatas("Car_park");
     carParkSelectedDataIndex = 0;
+    firstAidInMap = false;
+    firstAidSelectedDatas = getSelectedDatas("First_aid");
+    firstAidSelectedDataIndex = 0;
+    airQualityMonitoringStationInMap = false;
+    airQualityMonitoringStationSelectedDatas = getSelectedDatas("Air_quality_monitoring_station");
+    airQualityMonitoringStationSelectedDataIndex = 0;
+    pollenMonitoringStationInMap = false;
+    pollenMonitoringStationSelectedDatas = getSelectedDatas("Pollen_monitoring_station");
+    pollenMonitoringStationSelectedDataIndex = 0;
     $.ajax({
         url: "views.json",
         async: false,
@@ -513,18 +744,31 @@ function parseJSON3D() {
     countForLoading = 0;
     //PARSING DEL JSON E POSIZIONAMENTO PIN
     $.each(jsonRESULT, function(key, val) {
-        if (key == "Services")
+        if (key == "Services"){
             for (var feature of val.features) {
                 nessunRisultato = false;
-                if (feature.properties.typeLabel === "Parcheggio auto") {
+                if (feature.properties.typeLabel === "Stazione di monitoraggio della qualità dell'aria"){
+                    countForLoading++;
+                    add3DEntityToMap(feature, feature.properties.typeLabel);
+                    airQualityMonitoringStationInMap = true;
+                }else if (feature.properties.typeLabel === "Stazione monitoraggio polline"){
+                    countForLoading++;
+                    add3DEntityToMap(feature, feature.properties.typeLabel);
+                    pollenMonitoringStationInMap = true;
+                }else if (feature.properties.typeLabel === "Parcheggio auto") {
                     countForLoading++;
                     add3DEntityToMap(feature, feature.properties.typeLabel);
                     carParkInMap = true;
+                } else if (feature.properties.typeLabel === "Pronto soccorso") {
+                    countForLoading++;
+                    add3DEntityToMap(feature, feature.properties.typeLabel);
+                    firstAidInMap = true;
                 } else {
                     countForLoading++;
                     addServiceToMap(feature, key);
                 }
             }
+        }
         if (key == "SensorSites") {
             for (var feature of val.features) {
                 countForLoading++;
@@ -550,11 +794,21 @@ function parseJSON3D() {
 function add3DEntityToMap(feature, typeLabel) {
     var firstProperty = "";
     var secondProperty = undefined;
+    
     if (typeLabel === "SensorSites") {
         firstProperty = sensorSitesSelectedDatas[(sensorSitesSelectedDataIndex) % sensorSitesSelectedDatas.length];
     } else if (typeLabel === "Parcheggio auto") {
         firstProperty = carParkSelectedDatas[(carParkSelectedDataIndex) % carParkSelectedDatas.length];
         secondProperty = "occupancy";
+    } else if (typeLabel === "Pronto soccorso"){
+        firstProperty = firstAidSelectedDatas[(firstAidSelectedDataIndex) % firstAidSelectedDatas.length];
+        secondProperty = "blueCode";
+    }else if (typeLabel === "Stazione di monitoraggio della qualità dell'aria"){
+        firstProperty = airQualityMonitoringStationSelectedDatas[(airQualityMonitoringStationSelectedDataIndex) % airQualityMonitoringStationSelectedDatas.length];
+        secondProperty = "SO2";
+    }else if (typeLabel === "Stazione monitoraggio polline"){
+        firstProperty = pollenMonitoringStationSelectedDatas[(pollenMonitoringStationSelectedDataIndex) % pollenMonitoringStationSelectedDatas.length];
+        secondProperty = "concentration";
     }
     $.ajax({
         url: apiBase + 'v1/?serviceUri=' + feature.properties.serviceUri + '&format=json',
@@ -582,6 +836,12 @@ function add3DEntityToMap(feature, typeLabel) {
                 datas = getSensorSiteDatas(data);
             } else if (typeLabel === "Parcheggio auto") {
                 datas = getParcheggioAutoDatas(data);
+            } else if (typeLabel === "Pronto soccorso"){
+                datas = getFirstAidDatas(data);
+            }else if (typeLabel === "Stazione di monitoraggio della qualità dell'aria"){
+                datas = getAirQualityDatas(data);
+            }else if (typeLabel === "Stazione monitoraggio polline"){
+                datas = getPollenDatas(data);
             }
             var newEntity = new Cesium.Entity();
             newEntity.id = id;
@@ -710,6 +970,117 @@ function getSensorSiteDatas(data) {
     return datas;
 }
 
+
+function getAirQualityDatas(data){
+    var NO2 = 0;
+            var SO2 = 0;
+            var H2S = 0;
+            var CO = 0;
+            var Benzene = 0;
+            var PM2_5 = 0;
+            var PM10 = 0;
+            var annualPM10ExceedCount = 0;
+            var measuredTime = "";
+    $.each(data,function(key,val){
+        if(key == "realtime"){
+            try{
+                
+              NO2 = val.results.bindings[0].NO2.value; 
+              SO2 = val.results.bindings[0].SO2.value; 
+              H2S =val.results.bindings[0].H2S.value;
+              CO = val.results.bindings[0].CO.value;
+              Benzene = val.results.bindings[0].Benzene.value;
+              PM2_5 = val.results.bindings[0].PM2_5.value;       
+              PM10 = val.results.bindings[0].PM10.value;
+              annualPM10ExceedCount = val.results.bindings[0].annualPM10ExceedCount.value;
+              measuredTime = val.results.bindings[0].measuredTime.value;
+            }catch(e){}
+        }
+    });
+    var datas = {
+        NO2: NO2,
+        SO2: SO2,
+        H2S: H2S,
+        CO: CO,
+        Benzene: Benzene,
+        PM2_5: PM2_5,
+        PM10: PM10,
+        annualPM10ExceedCount: annualPM10ExceedCount,
+        
+    };
+    return datas;
+}
+
+
+function getPollenDatas(data){
+    var description = "<p>";
+            var familyName = "";
+            var concentration = "";
+            var value = 0;
+            var trend = "";
+            var measuredTime = "";
+            var trendMeasuredTime = ""; 
+$.each(data,function(key,val){
+    if(key == "realtime"){
+         try{
+               
+            familyName = val.results.bindings[0].familyName.value; 
+            concentration = val.results.bindings[0].concentration.value; 
+            value =val.results.bindings[0].value.value;
+            trend = val.results.bindings[0].trend.value;
+            measuredTime = val.results.bindings[0].measuredTime.value;
+            trendMeasuredTime = val.results.bindings[0].trendMeasuredTime.value; 
+            }catch(e){}
+        }
+    });
+    var datas = {
+        
+        value: value
+       
+    };
+    return datas;
+}
+
+
+
+function getFirstAidDatas(data){
+      var redCode = 0;
+      var blueCode =0;
+      var yellowCode = 0;
+      var grenenCode = 0;
+      var whiteCode = 0;
+      var state= "";
+      var measuredTime = "";
+    $.each(data,function(key,val){
+        if(key == "realtime"){
+            try{
+                
+              for(var i = 0; i < val.results.bindings.length ; i++){
+                            state = val.results.bindings[i].state.value;
+                            if( state  === "Totali"){
+                        redCode = val.results.bindings[i].redCode.value; 
+                        blueCode = val.results.bindings[i].blueCode.value; 
+                        yellowCode =val.results.bindings[i].yellowCode.value;
+                        greenCode= val.results.bindings[i].greenCode.value; 
+                        whiteCode = val.results.bindings[i].whiteCode.value;
+                        measuredTime = val.results.bindings[i].measuredTime.value;
+                                break;
+                        }
+                    }
+            }catch(e){}
+        }
+    });
+    var datas = {
+        redCode: redCode,
+        blueCode: blueCode,
+        yellowCode: yellowCode,
+        greenCode: greenCode,
+        whiteCode:whiteCode,
+        state: state,
+        measuredTime: measuredTime
+    };
+    return datas;
+}
 function getParcheggioAutoDatas(data) {
     var capacity = 0;
     var freeParkingLots = 0;
@@ -744,9 +1115,17 @@ function aggiorna3DEntities() {
     if (autoplay) {
         carParkSelectedDataIndex = (carParkSelectedDataIndex + 1) % carParkSelectedDatas.length;
         sensorSitesSelectedDataIndex = (sensorSitesSelectedDataIndex + 1) % sensorSitesSelectedDatas.length;
+        firstAidSelectedDataIndex = (firstAidSelectedDataIndex + 1) % firstAidSelectedDatas.length;
+        airQualityMonitoringStationSelectedDataIndex = (airQualityMonitoringStationSelectedDataIndex +1) %
+        airQualityMonitoringStationSelectedDatas.length;
+        pollenMonitoringStationSelectedDataIndex = (pollenMonitoringStationSelectedDataIndex + 1) %
+            pollenMonitoringStationSelectedDatas.length;
     }
     var carparkdata = carParkSelectedDatas[carParkSelectedDataIndex];
     var roadsensordata = sensorSitesSelectedDatas[sensorSitesSelectedDataIndex];
+    var firstaiddata = firstAidSelectedDatas[firstAidSelectedDataIndex];
+    var airqualitymonitoringstation = airQualityMonitoringStationSelectedDatas[airQualityMonitoringStationSelectedDataIndex];
+    var pollenmonitoringstation = pollenMonitoringStationSelectedDatas[pollenMonitoringStationSelectedDataIndex];
     var scala = $("#fattorescala").val();
     var oldEntities = viewer.entities;
     var newEntities = new Cesium.EntityCollection();
@@ -763,7 +1142,31 @@ function aggiorna3DEntities() {
         var geometry = new Object();
         var firstProperty = undefined;
         var secondProperty = undefined;
-        if (oldEntity.type === "Parcheggio auto") {
+       if (oldEntity.type === "Stazione di monitoraggio della qualità dell'aria" ){
+            $.each(viewsJSON[oldEntity.type], function(key, whatINeed) {
+                if (key === airqualitymonitoringstation) {
+                    template = whatINeed;
+                }
+            });
+            firstProperty = airqualitymonitoringstation;
+            
+        } else if (oldEntity.type === "Stazione monitoraggio polline"){
+            $.each(viewsJSON[oldEntity.type], function(key, whatINeed) {
+                if (key === pollenmonitoringstation) {
+                    template = whatINeed;
+                }
+            });
+            firstProperty = pollenmonitoringstation;
+            
+        }else if  (oldEntity.type === "Pronto soccorso"){
+            $.each(viewsJSON[oldEntity.type], function(key, whatINeed) {
+                if (key === firstaiddata) {
+                    template = whatINeed;
+                }
+            });
+            firstProperty = firstaiddata;
+            
+        }else if (oldEntity.type === "Parcheggio auto") {
             $.each(viewsJSON[oldEntity.type], function(key, whatINeed) {
                 if (key === carparkdata) {
                     template = whatINeed;
@@ -838,6 +1241,12 @@ function reloadDatasInBackground(entity) {
                 entity.datas = getParcheggioAutoDatas(data);
             } else if (entity.type === "SensorSites") {
                 entity.datas = getSensorSiteDatas(data);
+            }else if(entity.type === "Pronto soccorso"){
+                entity.datas = getFirstAidDatas(data);
+            }else if(entity.type === "Stazione di monitoraggio della qualità dell'aria"){
+                entity.datas = getAirQualityDatas(data);
+            }else if (entity.type === "Stazione monitoraggio polline"){
+                entity.datas = getPollenDatas(data);
             }
         }
     });
@@ -847,10 +1256,10 @@ function flyToEntitiesAndRemoveLoading() {
     countForLoading--;
     if (countForLoading <= 0) {
         $("#loading").hide();
-        if (!autoplay) {
+        if (!autoplay && barConf=="") {
             viewer.flyTo(viewer.entities);
         }
-        if (carParkInMap == true || sensorSitesInMap == true) {
+        if (carParkInMap == true || sensorSitesInMap == true || firstAidInMap == true || airQualityMonitoringStationInMap == true || pollenMonitoringStationInMap == true) {
             $('#fattorescala').show();
         }
         if (tipo_cat === "3d_data") { // && ( sensorSitesSelectedDatas.length>1 || carParkSelectedDatas.length>1)  ) {
@@ -934,6 +1343,7 @@ $(document).ready(function() {
     $("#raggioricerca").change(function() {
         mostraSelezione();
     });
+    
     // FUNZIONI PER CAMBIARE TAB
     $("#regular_tab").click(function() {
         $("#tabs-4").prop("style", "display:true");
@@ -943,6 +1353,7 @@ $(document).ready(function() {
         $("#transversal_tab").prop("class", "ui-state-default ui-corner-top");
         $("#3d_data_tab").prop("class", "ui-state-default ui-corner-top");
         tipo_cat = "categorie";
+        tab = "regular_tab";
     });
     $("#transversal_tab").click(function() {
         $("#tabs-5").prop("style", "display:true");
@@ -952,6 +1363,7 @@ $(document).ready(function() {
         $("#regular_tab").prop("class", "ui-state-default ui-corner-top");
         $("#3d_data_tab").prop("class", "ui-state-default ui-corner-top");
         tipo_cat = "categorie_t";
+        tab = "transversal_tab";
     });
     $("#3d_data_tab").click(function() {
         $("#tabs-6").prop("style", "display:true");
@@ -961,6 +1373,7 @@ $(document).ready(function() {
         $("#transversal_tab").prop("class", "ui-state-default ui-corner-top");
         $("#regular_tab").prop("class", "ui-state-default ui-corner-top");
         tipo_cat = "3d_data";
+        tab = "3d_data_tab";
     });
     // FUNZIONE PER MOSTRARE LE SOTTOCATEGORIE
     $(".toggle-subcategory").click(function() {
@@ -1050,6 +1463,7 @@ $(document).ready(function() {
         aggiorna3DEntities();
         stopAutoplay();
     })
+    checkLoad();
 });
 
 function playAutoplay(){
@@ -1146,7 +1560,40 @@ function getAreaVisibile() {
 function gestisciLegenda() {
     var carparkdata = carParkSelectedDatas[carParkSelectedDataIndex];
     var roadsensordata = sensorSitesSelectedDatas[sensorSitesSelectedDataIndex];
+    var firstaiddata = firstAidSelectedDatas[firstAidSelectedDataIndex];
+    var airqualitymonitoringstation = airQualityMonitoringStationSelectedDatas[airQualityMonitoringStationSelectedDataIndex];
+    var pollenmonitoringstation = pollenMonitoringStationSelectedDatas[pollenMonitoringStationSelectedDataIndex];
     var template = null;
+     
+    if (firstaiddata != undefined) {
+        $.each(viewsJSON["Pronto soccorso"], function(key, whatINeed) {
+            if (key === firstaiddata) {
+                template = whatINeed;
+            }
+        });
+        var materialF = template.properties.material;
+        var cF = document.getElementById("firstAidCanvas");
+        var ctxF = cF.getContext("2d");
+        if (materialF.indexOf("#") == 0) {
+            ctxF.fillStyle = materialF;
+            ctxF.fillRect(0, 0, 30, 30);
+        } else {
+            var imgF = new Image();
+            imgF.src = materialF;
+            imgF.onload = function() {
+                var patF = ctxF.createPattern(imgF, "no-repeat");
+                ctxF.rect(0, 0, 30, 30);
+                ctxF.fillStyle = patF;
+                ctxF.fill();
+            }
+        }
+        document.getElementById("firstAidSpan").innerHTML = "firstAid: " + firstaiddata;
+        $('#firstAidCanvas').show();
+    } else {
+        document.getElementById("firstAidSpan").innerHTML = "";
+        $('#firstAidCanvas').hide();
+    }
+
     if (carparkdata != undefined) {
         $.each(viewsJSON["Parcheggio auto"], function(key, whatINeed) {
             if (key === carparkdata) {
@@ -1204,5 +1651,62 @@ function gestisciLegenda() {
         document.getElementById("sensorSiteSpan").innerHTML = "";
         $('#sensorSiteCanvas').hide();
     }
-
+    
+    if (airqualitymonitoringstation != undefined) {
+        $.each(viewsJSON["Stazione di monitoraggio della qualità dell'aria"], function(key, whatINeed) {
+            if (key === airqualitymonitoringstation) {
+                template = whatINeed;
+            }
+        });
+        var materialA = template.properties.material;
+        var cA = document.getElementById("airQualityCanvas");
+        var ctxA = cA.getContext("2d");
+        if (materialA.indexOf("#") == 0) {
+            ctxA.fillStyle = materialA;
+            ctxA.fillRect(0, 0, 30, 30);
+        } else {
+            var imgA = new Image();
+            imgA.src = materialA;
+            imgA.onload = function() {
+                var patA = ctxA.createPattern(imgA, "no-repeat");
+                ctxA.rect(0, 0, 30, 30);
+                ctxA.fillStyle = patA;
+                ctxA.fill();
+            }
+        }
+        document.getElementById("airQualitySpan").innerHTML = "Air Quality: " + airqualitymonitoringstation;
+        $('#airQualityCanvas').show();
+    } else {
+        document.getElementById("airQualitySpan").innerHTML = "";
+        $('#airQualityCanvas').hide();
+    }
+    
+    if (pollenmonitoringstation != undefined) {
+        $.each(viewsJSON["Stazione monitoraggio polline"], function(key, whatINeed) {
+            if (key === pollenmonitoringstation) {
+                template = whatINeed;
+            }
+        });
+        var materialP = template.properties.material;
+        var cP = document.getElementById("pollenCanvas");
+        var ctxP = cP.getContext("2d");
+        if (materialP.indexOf("#") == 0) {
+            ctxP.fillStyle = materialP;
+            ctxP.fillRect(0, 0, 30, 30);
+        } else {
+            var imgP = new Image();
+            imgP.src = materialP;
+            imgP.onload = function() {
+                var patP = ctxP.createPattern(imgP, "no-repeat");
+                ctxP.rect(0, 0, 30, 30);
+                ctxP.fillStyle = patP;
+                ctxP.fill();
+            }
+        }
+        document.getElementById("pollenSpan").innerHTML = "Pollen: " + pollenmonitoringstation;
+        $('#pollenCanvas').show();
+    } else {
+        document.getElementById("pollenSpan").innerHTML = "";
+        $('#pollenCanvas').hide();
+    }
 }

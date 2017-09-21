@@ -181,5 +181,227 @@
             "thickness": "1",
             "scala":"100"
         }
-    }
+        
+        
+    },
+
+"Pronto soccorso" :{
+ "redCode" : {
+    "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#CC0000",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+             "thickness": "0.00025",
+            "scala":"50"
+  },
+            "blueCode" :{
+                "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+        "coordinates": "",
+                "material": "#3F51B5",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+             "thickness": "0.00025",
+            "scala":"50"
+  },
+            
+            "yellowCode" :{
+             "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+        "coordinates": "",
+                "material": "#FFD55E",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+             "thickness": "0.00025",
+            "scala":"50"
+  },
+        
+         "greenCode" :{
+             "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+        "coordinates": "",
+                "material": "#20570D",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+            "thickness": "0.00025",
+            "scala":"50"
+  },
+        "whiteCode":{
+   "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#FFFFFF",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+   } 
+ },
+    "Stazione monitoraggio polline" :{
+        "value":{
+            "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#20570D",
+                
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+   
+        }
+    },
+    
+    "Stazione di monitoraggio della qualità dell'aria":{
+        "NO2":{
+            "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#FF0000",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+            
+        },
+    "SO2" : {
+    "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+         "material": "#778899",
+         "alpha":"1",
+         "outline":"true",
+         "outlineColor":"#000000",
+         "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+     "scala":"50"
+        },
+        "H2S":{
+    "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#DA70D6",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+        },
+        "CO":{
+            "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#B0E0E6",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+        },
+        "Benzene":{
+        "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#FF4500",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+    },
+        "PM2_5" : {
+            "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#8B4513",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+        },
+        "PM10" : {
+             "dataInto": "extrudedHeight",
+    "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#808000",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+        
+        },
+        "annualPM10ExceedCount":{
+             "dataInto": "extrudedHeight",
+            "type": "rectangle",
+    "properties" :{
+         "coordinates": "",
+                "material": "#000080",
+                "alpha":"1",
+                "outline":"true",
+                "outlineColor":"#000000",
+                "extrudedHeight": "1"
+    },
+    
+    "thickness": "0.00025",
+            "scala":"50"
+        }
+   }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <!-- ServiceMap3D.
    Copyright (C) 2017 DISIT Lab http://www.disit.org - University of Florence
@@ -15,7 +15,7 @@
 
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
-    <head>
+  <head>
         <title>ServiceMap3D</title>
         <meta charset="UTF-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -36,9 +36,18 @@
         <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
         <!--script-->
         <script src="utility3d.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        <script src="configuration.js"></script>
+        <script src="jquery-3.2.1.min.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+
     </head>
-    <body onload="mapLoad()">
+   
+    <body>
+       
         <div id="cesiumContainer"></div>
+       
 
         <div id="menu-query" class="menu">
             <div class="header">- Hide Menu</div>
@@ -61,7 +70,7 @@
                     <select id="elencocomuni" name="elencocomuni">
                         <option value=""> - Select a Municipality - </option>
                     </select>
-                    <span id="gpsSelect"><img width="20px" src="img/icon-gps.png" ></img> </span>
+                    <span id="gpsSelect"><img width="20px" src="img/icon-gps.png" ></span>
                 </div>
                 <span name="lbl" caption="Actual_Selection">Selection: </span>
                 <span id="selezione">No selection</span>
@@ -69,7 +78,9 @@
                 <div>Approximate address: <span id="approximativeAddress" style="color: #004200;"></span>
                 </div>
                 <input type="text" name="serviceTextFilter" id="serviceTextFilter" placeholder="filter results by text" />
-                <br />
+                <br/>
+        
+
                 <span name="lbl" caption="Services_Categories_R">Services Categories</span>
                 <br />
                 <div id="tabs-servizi" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
@@ -82,6 +93,8 @@
                         <li id="3d_data_tab" class="ui-state-default ui-corner-top" role="tab" tabindex="0" aria-controls="tabs-6" aria-labelledby="ui-id-6" aria-selected="true" aria-expanded="true"><span name="lbl" caption="Search_3D_data_Services">3D Data</span>
                         </li>
                     </ul>
+            </div>
+            
                     <!--REGULAR SERVICES-->
                     <div id="tabs-4" aria-labelledby="ui-id-5" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="false">
                         <input type="checkbox" name="macro-select-all" id="macro-select-all" value="Select All" /> <span name="lbl" caption="Select_All_R">De/Select All</span>
@@ -421,7 +434,7 @@
                                 <input type="checkbox" name="Fire_brigade" value="Fire_brigade" class="sub_Emergency subcategory"> <img src="img/mapicons/Emergency_Fire_brigade.png" height="19" width="16" align="top">
                                 <span class="Emergency subcategory-label">Fire_brigade</span>
                                 <br>
-                                <input type="checkbox" name="First_aid" value="First_aid" class="sub_Emergency subcategory"> <img src="img/mapicons/Emergency_First_aid.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Firstaid" value="Firstaid" class="sub_Emergency subcategory"> <img src="img/mapicons/Emergency_First_aid.png" height="19" width="16" align="top">
                                 <span class="Emergency subcategory-label">First_aid</span>
                                 <br>
                                 <input type="checkbox" name="Italian_finance_police" value="Italian_finance_police" class="sub_Emergency subcategory"> <img src="img/mapicons/Emergency_Italian_finance_police.png" height="19" width="16" align="top">
@@ -528,6 +541,9 @@
                             <br>
                             <input type="checkbox" name="Environment" value="Environment" class="macrocategory"> <img src="img/mapicons/Environment.png" height="23" width="20" align="top"> <span class="Environment macrocategory-label">Environment</span> <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
+                                <input type="checkbox" name="Air_quality_monitoring_station" value="Air_quality_monitoring_station" class="sub_Environment subcategory"> <img src="img/mapicons/Environment.png" height="19" width="16" align="top">
+                                <span class="Environment subcategory-label">Air_quality_monitoring_station</span>
+                                <br>
                                 <input type="checkbox" name="Building_and_industrial_cleaning_activities" value="Building_and_industrial_cleaning_activities" class="sub_Environment subcategory"> <img src="img/mapicons/Environment_Building_and_industrial_cleaning_activities.png" height="19" width="16" align="top">
                                 <span class="Environment subcategory-label">Building_and_industrial_cleaning_activities</span>
                                 <br>
@@ -551,6 +567,9 @@
                                 <br>
                                 <input type="checkbox" name="Photovoltaic_system" value="Photovoltaic_system" class="sub_Environment subcategory"> <img src="img/mapicons/Environment_Photovoltaic_system.png" height="19" width="16" align="top">
                                 <span class="Environment subcategory-label">Photovoltaic_system</span>
+                                <br>
+                                <input type="checkbox" name="Pollen_monitoring_station" value="Pollen_monitoring_station" class="sub_Environment subcategory"> <img src="img/mapicons/Environment.png" height="19" width="16" align="top">
+                                <span class="Environment subcategory-label">Pollen_monitoring_station</span>
                                 <br>
                                 <input type="checkbox" name="Sewerage" value="Sewerage" class="sub_Environment subcategory"> <img src="img/mapicons/Environment_Sewerage.png" height="19" width="16" align="top">
                                 <span class="Environment subcategory-label">Sewerage</span>
@@ -1409,7 +1428,7 @@
                                 <input type="checkbox" name="Cargo_handling" value="Cargo_handling" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Cargo_handling.png" height="19" width="16" align="top">
                                 <span class="TransferServiceAndRenting subcategory-label">Cargo_handling</span>
                                 <br>
-                                <input type="checkbox" name="Car_park" value="Car_park" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Car_park.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Carpark" value="Carpark" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Car_park.png" height="19" width="16" align="top">
                                 <span class="TransferServiceAndRenting subcategory-label">Car_park</span>
                                 <br>
                                 <input type="checkbox" name="Car_rental_with_driver" value="Car_rental_with_driver" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Car_rental_with_driver.png" height="19" width="16" align="top">
@@ -1466,7 +1485,7 @@
                                 <input type="checkbox" name="RTZgate" value="RTZgate" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_RTZgate.png" height="19" width="16" align="top">
                                 <span class="TransferServiceAndRenting subcategory-label">RTZgate</span>
                                 <br>
-                                <input type="checkbox" name="SensorSite" value="SensorSite" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_SensorSite.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="SensorSite_r" value="SensorSite_r" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_SensorSite.png" height="19" width="16" align="top">
                                 <span class="TransferServiceAndRenting subcategory-label">SensorSite</span>
                                 <br>
                                 <input type="checkbox" name="Support_activities_for_transportation" value="Support_activities_for_transportation" class="sub_TransferServiceAndRenting subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Support_activities_for_transportation.png" height="19" width="16" align="top">
@@ -1703,230 +1722,343 @@
                         <div id="categorie_t">
                             <input type="checkbox" name="Area" value="Area" class="macrocategory"> <img src="img/mapicons/Area.png" height="23" width="20" align="top"> <span class="Area macrocategory-label">Area</span> <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
-                                <input type="checkbox" name="Controlled_parking_zone" value="Controlled_parking_zone" class="sub_Area subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Controlled_parking_zone.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Controlled_parking_zone_ta" value="Controlled_parking_zone_ta" class="sub_Area subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Controlled_parking_zone.png" height="19" width="16" align="top">
                                 <span class="Area subcategory-label">Controlled_parking_zone</span>
                                 <br>
-                                <input type="checkbox" name="Gardens" value="Gardens" class="sub_Area subcategory"> <img src="img/mapicons/Entertainment_Gardens.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Gardens_t" value="Gardens_ta" class="sub_Area subcategory"> <img src="img/mapicons/Entertainment_Gardens.png" height="19" width="16" align="top">
                                 <span class="Area subcategory-label">Gardens</span>
                                 <br>
-                                <input type="checkbox" name="Green_areas" value="Green_areas" class="sub_Area subcategory"> <img src="img/mapicons/Entertainment_Green_areas.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Green_areas_ta" value="Green_areas_ta" class="sub_Area subcategory"> <img src="img/mapicons/Entertainment_Green_areas.png" height="19" width="16" align="top">
                                 <span class="Area subcategory-label">Green_areas</span>
                                 <br>
                             </div>
                             <br>
                             <input type="checkbox" name="DigitalLocation" value="DigitalLocation" class="macrocategory"> <img src="img/mapicons/DigitalLocation.png" height="23" width="20" align="top"> <span class="DigitalLocation macrocategory-label">DigitalLocation</span> <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
-                                <input type="checkbox" name="Artisan_shop" value="Artisan_shop" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Artisan_shop.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Artisan_shop_t" value="Artisan_shop_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Artisan_shop.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Artisan_shop</span>
                                 <br>
-                                <input type="checkbox" name="Bank" value="Bank" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/FinancialService_Bank.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Bank_t" value="Bank_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/FinancialService_Bank.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Bank</span>
                                 <br>
-                                <input type="checkbox" name="Bookshop" value="Bookshop" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Bookshop.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Bookshop_t" value="Bookshop_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Bookshop.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Bookshop</span>
                                 <br>
-                                <input type="checkbox" name="Boxoffice" value="Boxoffice" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Boxoffice.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Boxoffice_t" value="Boxoffice_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Boxoffice.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Boxoffice</span>
                                 <br>
-                                <input type="checkbox" name="Churches" value="Churches" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Churches.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Churches_t" value="Churches_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Churches.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Churches</span>
                                 <br>
-                                <input type="checkbox" name="Cinema" value="Cinema" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Cinema.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Cinema_t" value="Cinema_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Cinema.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Cinema</span>
                                 <br>
-                                <input type="checkbox" name="Consulate" value="Consulate" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/GovernmentOffice_Consulate.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Consulate_t" value="Consulate_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/GovernmentOffice_Consulate.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Consulate</span>
                                 <br>
-                                <input type="checkbox" name="Controlled_parking_zone" value="Controlled_parking_zone" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Controlled_parking_zone.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Controlled_parking_zone_t" value="Controlled_parking_zone_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Controlled_parking_zone.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Controlled_parking_zone</span>
                                 <br>
-                                <input type="checkbox" name="Cycle_paths" value="Cycle_paths" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Cycle_paths.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Cycle_paths_t" value="Cycle_paths_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Cycle_paths.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Cycle_paths</span>
                                 <br>
-                                <input type="checkbox" name="Gardens" value="Gardens" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Gardens.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Gardens_t" value="Gardens_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Gardens.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Gardens</span>
                                 <br>
-                                <input type="checkbox" name="Green_areas" value="Green_areas" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Green_areas.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Green_areas_t" value="Green_areas_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Green_areas.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Green_areas</span>
                                 <br>
-                                <input type="checkbox" name="Gym_fitness" value="Gym_fitness" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Gym_fitness.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Gym_fitness_t" value="Gym_fitness_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Gym_fitness.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Gym_fitness</span>
                                 <br>
-                                <input type="checkbox" name="Healthcare_centre" value="Healthcare_centre" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Healthcare_centre.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Healthcare_centre_t" value="Healthcare_centre_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Healthcare_centre.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Healthcare_centre</span>
                                 <br>
-                                <input type="checkbox" name="Historical_buildings" value="Historical_buildings" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Historical_buildings.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Historical_buildings_t" value="Historical_buildings_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Historical_buildings.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Historical_buildings</span>
                                 <br>
-                                <input type="checkbox" name="Library" value="Library" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Library.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Library_t" value="Library_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Library.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Library</span>
                                 <br>
-                                <input type="checkbox" name="Literary_cafe" value="Literary_cafe" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Literary_cafe.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Literary_cafe_t" value="Literary_cafe_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Literary_cafe.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Literary_cafe</span>
                                 <br>
-                                <input type="checkbox" name="Local_health_authority" value="Local_health_authority" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Local_health_authority.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Local_health_authority_t" value="Local_health_authority_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Local_health_authority.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Local_health_authority</span>
                                 <br>
-                                <input type="checkbox" name="Monument_location" value="Monument_location" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Monument_location.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Monument_location_t" value="Monument_location_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Monument_location.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Monument_location</span>
                                 <br>
-                                <input type="checkbox" name="Museum" value="Museum" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Museum.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Museum_t" value="Museum_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Museum.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Museum</span>
                                 <br>
-                                <input type="checkbox" name="Pastry_shop" value="Pastry_shop" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Pastry_shop.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Pastry_shop_t" value="Pastry_shop_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Pastry_shop.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Pastry_shop</span>
                                 <br>
-                                <input type="checkbox" name="Pharmacy" value="Pharmacy" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Pharmacy.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Pharmacy_t" value="Pharmacy_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/ShoppingAndService_Pharmacy.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Pharmacy</span>
                                 <br>
-                                <input type="checkbox" name="Public_hospital" value="Public_hospital" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Public_hospital.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Public_hospital_t" value="Public_hospital_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/HealthCare_Public_hospital.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Public_hospital</span>
                                 <br>
-                                <input type="checkbox" name="Public_infant_school" value="Public_infant_school" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/EducationAndResearch_Public_infant_school.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Public_infant_school_t" value="Public_infant_school_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/EducationAndResearch_Public_infant_school.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Public_infant_school</span>
                                 <br>
-                                <input type="checkbox" name="Restaurant" value="Restaurant" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Restaurant.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Restaurant_t" value="Restaurant_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Restaurant.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Restaurant</span>
                                 <br>
-                                <input type="checkbox" name="RTZgate" value="RTZgate" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_RTZgate.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="RTZgate_t" value="RTZgate_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_RTZgate.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">RTZgate</span>
                                 <br>
-                                <input type="checkbox" name="Small_shop" value="Small_shop" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Small_shop.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Small_shop_t" value="Small_shop_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Small_shop.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Small_shop</span>
                                 <br>
-                                <input type="checkbox" name="Sports_facility" value="Sports_facility" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Sports_facility.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Sports_facility_t" value="Sports_facility_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/Entertainment_Sports_facility.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Sports_facility</span>
                                 <br>
-                                <input type="checkbox" name="Squares" value="Squares" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Squares.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Squares_t" value="Squares_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Squares.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Squares</span>
                                 <br>
-                                <input type="checkbox" name="Theatre" value="Theatre" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Theatre.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Theatre_t" value="Theatre_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/CulturalActivity_Theatre.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Theatre</span>
                                 <br>
-                                <input type="checkbox" name="Toilet" value="Toilet" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Toilet.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Toilet_t" value="Toilet_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Toilet.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Toilet</span>
                                 <br>
-                                <input type="checkbox" name="Tourist_complaints_office" value="Tourist_complaints_office" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_complaints_office.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tourist_complaints_office_t" value="Tourist_complaints_office_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_complaints_office.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Tourist_complaints_office</span>
                                 <br>
-                                <input type="checkbox" name="Tourist_information_office" value="Tourist_information_office" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_information_office.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tourist_information_office_t" value="Tourist_information_office_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_information_office.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Tourist_information_office</span>
                                 <br>
-                                <input type="checkbox" name="Tourist_trail" value="Tourist_trail" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_trail.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tourist_trail_t" value="Tourist_trail_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Tourist_trail.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Tourist_trail</span>
                                 <br>
-                                <input type="checkbox" name="Training_school" value="Training_school" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/EducationAndResearch_Training_school.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Training_school_t" value="Training_school_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/EducationAndResearch_Training_school.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Training_school</span>
                                 <br>
-                                <input type="checkbox" name="Train_station" value="Train_station" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Train_station.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Train_station_t" value="Train_station_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Train_station.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Train_station</span>
                                 <br>
-                                <input type="checkbox" name="Tramline" value="Tramline" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tramline.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tramline_t" value="Tramline_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tramline.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Tramline</span>
                                 <br>
-                                <input type="checkbox" name="Tram_stops" value="Tram_stops" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tram_stops.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tram_stops_t" value="Tram_stops_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tram_stops.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Tram_stops</span>
                                 <br>
-                                <input type="checkbox" name="Trattoria" value="Trattoria" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Trattoria.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Trattoria_t" value="Trattoria_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/WineAndFood_Trattoria.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Trattoria</span>
                                 <br>
-                                <input type="checkbox" name="Wifi" value="Wifi" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Wifi.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Wifi_t" value="Wifi_t" class="sub_DigitalLocation subcategory"> <img src="img/mapicons/TourismService_Wifi.png" height="19" width="16" align="top">
                                 <span class="DigitalLocation subcategory-label">Wifi</span>
                                 <br>
                             </div>
                             <br>
                             <input type="checkbox" name="HappeningNow" value="HappeningNow" class="macrocategory"> <img src="img/mapicons/HappeningNow.png" height="23" width="20" align="top"> <span class="HappeningNow macrocategory-label">HappeningNow</span> <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
-                                <input type="checkbox" name="Event" value="Event" class="sub_HappeningNow subcategory"> <img src="img/mapicons/HappeningNow_Event.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Event_t" value="Event_t" class="sub_HappeningNow subcategory"> <img src="img/mapicons/HappeningNow_Event.png" height="19" width="16" align="top">
                                 <span class="HappeningNow subcategory-label">Event</span>
                                 <br>
                             </div>
                             <br>
                             <input type="checkbox" name="Path" value="Path" class="macrocategory"> <img src="img/mapicons/Path.png" height="23" width="20" align="top"> <span class="Path macrocategory-label">Path</span> <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
-                                <input type="checkbox" name="Cycle_paths" value="Cycle_paths" class="sub_Path subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Cycle_paths.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Cycle_paths_t" value="Cycle_paths_t" class="sub_Path subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Cycle_paths.png" height="19" width="16" align="top">
                                 <span class="Path subcategory-label">Cycle_paths</span>
                                 <br>
-                                <input type="checkbox" name="Tourist_trail" value="Tourist_trail" class="sub_Path subcategory"> <img src="img/mapicons/TourismService_Tourist_trail.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tourist_trail_t" value="Tourist_trail_t" class="sub_Path subcategory"> <img src="img/mapicons/TourismService_Tourist_trail.png" height="19" width="16" align="top">
                                 <span class="Path subcategory-label">Tourist_trail</span>
                                 <br>
-                                <input type="checkbox" name="Tramline" value="Tramline" class="sub_Path subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tramline.png" height="19" width="16" align="top">
+                                <input type="checkbox" name="Tramline_t" value="Tramline_t" class="sub_Path subcategory"> <img src="img/mapicons/TransferServiceAndRenting_Tramline.png" height="19" width="16" align="top">
                                 <span class="Path subcategory-label">Tramline</span>
                                 <br>
                             </div>
                             <br>
-                            <input type="checkbox" name="fresh-place" value="Fresh_place" id="FreshPlace" class="macrocategory"> <img src="img/mapicons/TourismService_Fresh_place.png" height="23" width="20" align="top" '=""> <span class="fresh-place macrocategory-label">Fresh Place</span>
+                            <input type="checkbox" name="fresh-place_t" value="Fresh_place_t" id="FreshPlace" class="macrocategory"> <img src="img/mapicons/TourismService_Fresh_place.png" height="23" width="20" align="top" > <span class="fresh-place macrocategory-label">Fresh Place</span>
                             <br>
-                            <input type="checkbox" name="public-transport-line" value="PublicTransportLine" id="PublicTransportLine" class="macrocategory"> <img src="img/mapicons/TransferServiceAndRenting_Urban_bus.png" height="23" width="20" align="top" '=""> <span class="public-transport-line macrocategory-label">Public Transport Line</span>
+                            <input type="checkbox" name="public-transport-line_t" value="PublicTransportLine_t" id="PublicTransportLine" class="macrocategory"> <img src="img/mapicons/TransferServiceAndRenting_Urban_bus.png" height="23" width="20" align="top"> <span class="public-transport-line macrocategory-label">Public Transport Line</span>
                             <br>
-                            <input type="checkbox" name="road-sensor" value="SensorSite" id="Sensor" class="macrocategory"> <img src="img/mapicons/TransferServiceAndRenting_SensorSite.png" height="23" width="20" align="top" '=""> <span class="road-sensor macrocategory-label">Road Sensors</span> 
+                            <input type="checkbox" name="road-sensor_t" value="SensorSite_t" id="Sensor" class="macrocategory"> <img src="img/mapicons/TransferServiceAndRenting_SensorSite.png" height="23" width="20" align="top" > <span class="road-sensor macrocategory-label">Road Sensors</span> 
                             <br>
-                            <input type="checkbox" name="near-bus-stops" value="BusStop" class="macrocategory" id="Bus"> <img src="img/mapicons/TransferServiceAndRenting_BusStop.png" height="23" width="20" align="top"> <span class="near-bus-stops macrocategory-label">Bus Stops</span>
+                            <input type="checkbox" name="near-bus-stops_t" value="BusStop_t" class="macrocategory" id="Bus"> <img src="img/mapicons/TransferServiceAndRenting_BusStop.png" height="23" width="20" align="top"> <span class="near-bus-stops macrocategory-label">Bus Stops</span>
                         </div>
                     </div>
                     <!--3D DATA-->
                     <div id="tabs-6" aria-labelledby="ui-id-6" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
+                       
                         <div id="3d_data">
-                            <input type="checkbox" name="Car_park" value="Car_park" class="macrocategory"> 
-                            <img src="img/mapicons/TransferServiceAndRenting_Car_park.png" height="23" width="20" align="top">
+                            <input type="checkbox" name="First_aid" value="First_aid" id="First_aid" class="macrocategory"> <img src="img/mapicons/Emergency_First_aid.png"  height="23" width="20" align="top">
+                         <span class="First_aid macrocategory-label">First aid</span> 
+                            <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
+                             <div class="subcategory-content">
+                              
+                                  <input type="checkbox" name="redCode" value="redCode" class="sub_First_aid subcategory">  <span></span>
+                                    <span class="First_aid subcategory-label">redCode</span>
+                                
+                                <br>
+                                 
+                                    <input type="checkbox" name="blueCode" value="blueCode" class="sub_First_aid subcategory">  <span></span>
+                                    <span class="First_aid subcategory-label">blueCode</span>
+                                 
+                                <br>
+                                   
+                                    <input type="checkbox" name="yellowCode" value="yellowCode" class="sub_First_aid subcategory">  <span></span>
+                                    <span class="First_aid subcategory-label">yellowCode</span>
+                                 
+                                <br>
+                               
+                                   
+                                    <input type="checkbox" name="greenCode" value="greenCode" class="sub_First_aid subcategory">  <span></span>
+                                    <span class="First_aid subcategory-label">greenCode</span>
+                                 
+                                 
+                                <br>
+                                 
+                                    <input type="checkbox" name="whiteCode" value="whiteCode" class="sub_First_aid subcategory">  <span></span>
+                                    <span class="First_aid subcategory-label">whiteCode</span>
+                                 <br>
+                             </div>
+                           <br>
+                             <input type="checkbox" name="Pollen_monitoring_station" value="Pollen_monitoring_station" class="macrocategory" id="Pollen_monitoring_station"> <img src="img/mapicons/Environment.png" height="23" width="20" align="top">
+                         <span class="Pollen_monitoring_station macrocategory-label">Pollen monitoring station</span> 
+                            <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
+                             <div class="subcategory-content">
+                                 
+                                 
+                                  <input type="checkbox" name="value" value="value" class="sub_Pollen_monitoring_station subcategory">  <span></span>
+                                    <span class="Pollen_monitoring_station subcategory-label">value</span>
+                                
+                                <br>
+                                 
+                            </div>
+                            
+                           <br>
+                        <input type="checkbox" name="Air_quality_monitoring_station" value="Air_quality_monitoring_station" class="macrocategory" id="Air_quality_monitoring_station">
+                            <img src="img/mapicons/Environment.png" height="23" width="20" align="top">
+                            <span class="Air_quality_monitoring_station macrocategory-label">Air quality monitoring station</span> 
+                            <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
+                             <div class="subcategory-content">
+                              
+                                  <input type="checkbox" name="NO2" value="NO2" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">NO2</span>
+                                
+                                <br>
+                                 
+                                   <input type="checkbox" name="SO2" value="SO2" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">SO2</span>
+                                 
+                                <br>
+                                   
+                                    <input type="checkbox" name="H25" value="H25" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">H25</span>
+                                <br>
+                               
+                                    <input type="checkbox" name="CO" value="CO" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">CO</span>
+                                <br>
+                                 <input type="checkbox" name="Benzene" value="Benzene" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">Benzene</span>
+                                 <br>
+                                 <input type="checkbox" name="PM2_5" value="PM2_5" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">PM2_5</span>
+                                 <br>
+                                 <input type="checkbox" name="PM10" value="PM10" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">PM10</span>
+                                 <br>
+                                 <input type="checkbox" name="annualPM10ExceedCount" value="annualPM10ExceedCount" class="sub_Air_quality_monitoring_station subcategory">  <span></span>
+                                    <span class="Air_quality_monitoring_station subcategory-label">annualPM10ExceedCount</span>
+                                 <br>
+                                 
+                             </div>
+                            <br>
+                            
+                        <input type="checkbox" name="Car_park" value="Car_park" id="Car_park" class="macrocategory"> 
+                           <img src="img/mapicons/TransferServiceAndRenting_Car_park.png" height="23" width="20" align="top">
                             <span class="Car_park macrocategory-label">Car park</span> 
                             <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                              <div class="subcategory-content">
-                                    <input type="checkbox" name="capacity" value="capacity" class="sub_Car_park subcategory">  <span></span>
+                              
+                                  <input type="checkbox" name="capacity" value="capacity" class="sub_Car_park subcategory">  <span></span>
                                     <span class="Car_park subcategory-label">capacity</span>
+                                
                                 <br>
+                                 
                                     <input type="checkbox" name="freeParkingLots" value="freeParkingLots" class="sub_Car_park subcategory">  <span></span>
                                     <span class="Car_park subcategory-label">freeParkingLots</span>
+                                 
                                 <br>
+                                   
                                     <input type="checkbox" name="occupiedParkingLots" value="occupiedParkingLots" class="sub_Car_park subcategory">  <span></span>
                                     <span class="Car_park subcategory-label">occupiedParkingLots</span>
+                                 
                                 <br>
-                                    <input type="checkbox" name="occupancy" value="occupancy" class="sub_Car_park subcategory">  <span></span>
+                               
+                                    <input type="checkbox" name="occupancyCarPark" value="occupancyCarPark" class="sub_Car_park subcategory">  <span></span>
                                     <span class="Car_park subcategory-label">occupancy</span>
+                                 
                                 <br>
                              </div>
                             <br>
-                            <input type="checkbox" name="SensorSite" value="SensorSite" id="Sensor" class="macrocategory"> 
+                            
+                            <input type="checkbox" name="SensorSite" value="SensorSite" id="SensorSite" class="macrocategory"> 
                             <img src="img/mapicons/TransferServiceAndRenting_SensorSite.png" height="23" width="20" align="top"> 
                             <span class="SensorSite macrocategory-label">Road Sensors</span> 
                             <span class="toggle-subcategory" title="Mostra sottocategorie">+</span>
                             <div class="subcategory-content">
+                                 
                                     <input type="checkbox" name="avgDistance" value="avgDistance" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">avgDistance</span>
+                                
                                     <br>
+                                
                                     <input type="checkbox" name="avgTime" value="avgTime" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">avgTime</span>
+                               
                                     <br>
+                                 
                                     <input type="checkbox" name="occupancy" value="occupancy" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">occupancy</span>
+                                
                                     <br>
+                                 
                                     <input type="checkbox" name="concentration" value="concentration" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">concentration</span>
-                                    <br>
+                                
+                                    <br>                                
                                     <input type="checkbox" name="vehicleFlow" value="vehicleFlow" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">vehicleFlow</span>
-                                    <br>
+                              
+                                    <br>                                
                                     <input type="checkbox" name="averageSpeed" value="averageSpeed" class="sub_SensorSite subcategory"> <span></span>
                                     <span class="SensorSite subcategory-label">averageSpeed</span>
-                                    <br>
+                             
+                                    <br>                              
                                     <input type="checkbox" name="thresholdPerc" value="thresholdPerc" class="sub_SensorSite subcategory"> <span></span>
-                                    <span class="SensorSite subcategory-label">thresholdPerc</span>
-                                    <br>
+                                    <span class="SensorSite subcategory-label">thresholdPerc</span>                            
+                                    <br>                                
                                     <input type="checkbox" name="speedPercentile" value="speedPercentile" class="sub_SensorSite subcategory"> <span></span>
-                                    <span class="SensorSite subcategory-label">speedPercentile</span>
+                                    <span class="SensorSite subcategory-label">speedPercentile</span>                                
                                     <br>
                             </div>
-                        </div>
-                        <br>
-                        <select id="fattorescala" name="fattorescala">  
+                            <br>                            
+                        </div>                         
+                        <br>                     
+                        <select id="fattorescala" name="fattorescala"> 
+                            <option value="0.25">Scale x0.25</option>
+                            <option value="0.5">Scale x0.5</option>
                             <option value="1">Scale x1</option>
                             <option value="2">Scale x2</option>
+                            <option value="3">Scale x3</option>
                             <option value="4" selected="selected" >Scale x4</option>
+                            <option value="5">Scale x5</option>
                             <option value="6">Scale x6</option>
+                            <option value="7">Scale x7</option>
                             <option value="8">Scale x8</option>
+                            <option value="9">Scale x9</option>
+                            <option value="10">Scale x10</option>
                             <option value="12">Scale x12</option>
                             <option value="16">Scale x16</option>
-                        </select>
+                        </select>                          
                         <br><br>
                             <table id="autoplay_query" style="display: none;">
                                 <tr> 
@@ -1957,11 +2089,9 @@
                                     <tr> 
                                         <th></th>
                                         <th><button id="autoplay" value="stop" name="autoplay" >Play!</button></th>
-                                </tr>
+                                    </tr>
                             </table>
-
-                    </div>
-                </div>
+                    </div>                
                 <br>
                 <div>
                     <span name="lbl" caption="Num_Results_dx_R">N. results:</span>
@@ -1987,15 +2117,17 @@
                         <option value="25">25 km</option>
                         <option value="area">Visible area</option>
                     </select>
-
                     <hr/>
-                    <span class="menu" id="serviceSearch">
-                        <img id="searchImg" src="img/search_icon.png" alt="Search Services" width="24" onclick="ricercaServizi();">
-                    </span>
+                    <button class="menu" id="serviceSearch" onclick="ricercaServizi();">
+                        <img id="searchImg" src="img/search_icon.png" alt="Search Services" width="24" >
+                    </button>
+                </div>
+                <div id="saveas">
+                    <button class="button" name="buttonSave" id="buttonSave" style="display: block;" onclick="statoRicerca();">Save</button>
+                    <div id="saveResult" style="display: block;" ></div>          
                 </div>
             </div>
         </div>
-        
         <div class="menu" id="legenda">
             <div class="header">- Hide Menu</div>
             <div class="content" style="display:block;">
@@ -2003,13 +2135,16 @@
             <span id="carParkSpan" style="vertical-align: center;"></span>
             <canvas id="sensorSiteCanvas" width="30" height="30" style="border:1px solid #FFFFFF"  style="display: none;">Your browser does not support the HTML5 canvas tag.</canvas>
             <span id="sensorSiteSpan" style="vertical-align: center;"></span>
+             <canvas id="pollenCanvas" width="30" height="30" style="border:1px solid #FFFFFF" style="display: none;">Your browser does not support the HTML5 canvas tag.</canvas>
+            <span id="pollenSpan" style="vertical-align: center;"></span>  
+            <canvas id="airQualityCanvas" width="30" height="30" style="border:1px solid #FFFFFF" style="display: none;">Your browser does not support the HTML5 canvas tag.</canvas>
+            <span id="airQualitySpan" style="vertical-align: center;"></span>
+            <canvas id="firstAidCanvas" width="30" height="30" style="border:1px solid #FFFFFF" style="display: none;">Your browser does not support the HTML5 canvas tag.</canvas>
+            <span id="firstAidSpan" style="vertical-align: center;"></span>
             </div>
         </div>    
-        
         <div id="loading">
             <img src="img/ajax-loader.gif" width="128">
         </div>
-    </div>
-</body>
-
+    </body>
 </html>
